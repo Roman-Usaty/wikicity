@@ -1,0 +1,8 @@
+.ant-input-group-addon > .ant-input-search-button {
+    max-height: 32px;
+    max-width: 32px;
+}
+
+.search {
+    max-width: 70%;
+}
