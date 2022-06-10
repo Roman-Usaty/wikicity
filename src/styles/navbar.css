@@ -1,0 +1,28 @@
+.logoText {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 50px;
+    margin: 0;
+    padding: 25px;
+    color: #fff;
+}
+
+
+.buttonContainer {
+    display: flex !important;
+    justify-content: space-around;
+    align-items: center;
+}
+
+button.coloredDanger {
+    border-color: #ff9a03 !important;
+    background: #ff9a03 !important;
+}
+
+button.ant-btn {
+    width: 180px;
+    height: 60px;
+    font-family: 'Roboto';
+    font-size: 30px;
+}
