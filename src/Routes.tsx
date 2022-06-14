@@ -9,7 +9,7 @@ export const useRoutes = () => {
         <Routes>
             <Route path="/time" element={<TimePage />} />
             <Route path="/" element={<CityPage />} />
-            {/* <Route path="*" element={<Navigate to="/" />} /> */}
+            <Route path="*" element={<Navigate to="/" />} /> 
         </Routes>
     );
 };

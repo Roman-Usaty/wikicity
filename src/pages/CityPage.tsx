@@ -1,18 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setCity } from "../slices/citySlice";
 import { Typography, Input, Divider } from 'antd';
 import "../styles/citypages.css";
+import { RootState } from "../store/store";
 
 const { Search } = Input;
-const { Title, Paragraph, Text }  = Typography;
+const { Title, Paragraph}  = Typography;
 
 export const CityPage = () => {
-    const [city, setCity] = useState("Самара");
+    const city = useSelector((state: RootState) => state.city.value);
+    const dispatch = useDispatch();
+
+    const changeHandler = (event:any) => {
+        dispatch(setCity(event.target.value));
+    };
 
     return (
         <>
             <Typography>
                 <div style={{display: "flex", justifyContent:"space-around"}}>
-                <Search className="search" placeholder="Введите город"/>
+                <Search className="search" placeholder="Введите город" value={city} onChange={changeHandler}/>
                 </div>
                 
                 <Divider />
