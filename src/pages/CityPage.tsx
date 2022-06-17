@@ -1,33 +1,49 @@
-import React from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import { useHttp } from "../hooks/http.hook";
 import { useSelector, useDispatch } from "react-redux";
 import { setCity } from "../slices/citySlice";
 import { Typography, Input, Divider } from 'antd';
-import "../styles/citypages.css";
 import { RootState } from "../store/store";
+import "../styles/citypages.css";
 
 const { Search } = Input;
 const { Title, Paragraph}  = Typography;
 
 export const CityPage = () => {
     const city = useSelector((state: RootState) => state.city.value);
-    const dispatch = useDispatch();
+    const [text, setText] = useState<string>("");
+    const dispatch = useDispatch(); 
+    const {loading, error, request, clearError} = useHttp();
+   
+    const submitHandler = async (value:any) => {   
+        dispatch(setCity(value));
+        await getText(value);
+    }
+    const getText = async (city:string) => {
+        setText(await request("/api/city/search/" + city));
+    }
 
-    const changeHandler = (event:any) => {
-        dispatch(setCity(event.target.value));
-    };
+    useEffect(() => {
+        if (text === "") {
+            getText(city);
+        }
+    })
+      
 
     return (
         <>
             <Typography>
                 <div style={{display: "flex", justifyContent:"space-around"}}>
-                <Search className="search" placeholder="Введите город" value={city} onChange={changeHandler}/>
+                    <Search className="search" placeholder="Введите город" onSearch={submitHandler}/>
                 </div>
                 
                 <Divider />
-                <Title>Здесь будет информация о городе {city}</Title>
-                <Paragraph style={{fontSize:25}}>
-                    Здесь будет загружена ифнормация о городе с Wikipedia.
-                </Paragraph>
+                <Title>{city}</Title>
+                    <Paragraph style={{fontSize: 20}}>
+                        {
+                            !loading ? text : "Loading.."
+                        }
+                    </Paragraph>
             </Typography>
         </>
     );
