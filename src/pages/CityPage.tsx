@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { useHttp } from "../hooks/http.hook";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setCity } from "../slices/citySlice";
 import { Typography, Input, Divider } from 'antd';
 import { RootState } from "../store/store";
+import SearchCity from "../api/search";
 import "../styles/citypages.css";
 
 const { Search } = Input;
@@ -13,14 +13,13 @@ export const CityPage = () => {
     const city = useSelector((state: RootState) => state.city.value);
     const [text, setText] = useState<string>("");
     const dispatch = useDispatch(); 
-    const {loading, error, request, clearError} = useHttp();
    
-    const submitHandler = async (value:any) => {   
+    const searchCity = async (value:any) => {   
         dispatch(setCity(value));
         await getText(value);
     }
     const getText = async (city:string) => {
-        setText(await request("/api/city/search/" + city));
+        setText(await SearchCity(city));
     }
 
     useEffect(() => {
@@ -34,14 +33,14 @@ export const CityPage = () => {
         <>
             <Typography>
                 <div style={{display: "flex", justifyContent:"space-around"}}>
-                    <Search className="search" placeholder="Введите город" onSearch={submitHandler}/>
+                    <Search className="search" placeholder="Введите город" onSearch={searchCity}/>
                 </div>
                 
                 <Divider />
                 <Title>{city}</Title>
                     <Paragraph style={{fontSize: 20}}>
                         {
-                            !loading ? text : "Loading.."
+                            text
                         }
                     </Paragraph>
             </Typography>
